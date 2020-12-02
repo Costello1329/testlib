@@ -18,7 +18,7 @@
 
 #define START_TEST(___name) \
     { \
-        ssize_t ___subtest_num = -1; \
+        ssize_t subtest_index = -1; \
         std::string ___subtest_name; \
         auto ___test_started = std::chrono::high_resolution_clock::now(); \
         ++ ___test_num; \
@@ -34,10 +34,10 @@
 
 #define TEST_FAILED_BASE(___msg) \
     { \
-        if (___subtest_num != -1) \
+        if (subtest_index != -1) \
             std::cout << \
                 "Subtest " << \
-                std::to_string(___subtest_num + 1) << \
+                std::to_string(subtest_index + 1) << \
                 " (" << \
                 ___subtest_name << \
                 ") failed:" << \
@@ -75,7 +75,7 @@
     std::vector<size_t> ___ammounts; \
     std::vector<std::string> ___names;
 
-#define SUBTEST(___name, ___amount, ___value) \
+#define SUBTEST(___name, ___amount) \
     ___total_ammount += ___amount; \
     ___names.emplace_back(___name); \
     ___ammounts.emplace_back(___amount);
@@ -93,7 +93,7 @@
                 "Subtest " << (___j + 1) << " ("<< ___names[___j] << ") passed" << std::endl; \
         } \
         else if (___i < ___prefix_sum) { \
-            ___subtest_num = ___j; \
+            subtest_index = ___j; \
             ___subtest_name = ___names[___j]; \
             break; \
         } \
