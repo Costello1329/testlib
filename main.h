@@ -1,5 +1,5 @@
-#ifndef TESTLIB_LIB_H
-#define TESTLIB_LIB_H
+#ifndef TESTLIB_MAIN_H
+#define TESTLIB_MAIN_H
 
 #include <iostream>
 #include <sstream>
@@ -11,8 +11,6 @@
 #define START_TESTS \
     size_t ___test_num = 0; \
     std::string ___test_name; \
-    ssize_t ___subtest_num = -1; \
-    std::string ___subtest_name; \
 
 #define END_TESTS \
     std::cout << "All tests passed" << std::endl; \
@@ -20,6 +18,8 @@
 
 #define START_TEST(___name) \
     { \
+        ssize_t ___subtest_num = -1; \
+        std::string ___subtest_name; \
         auto ___test_started = std::chrono::high_resolution_clock::now(); \
         ++ ___test_num; \
         ___test_name = ___name; \
@@ -71,16 +71,14 @@
     }
 
 #define START_SUBTESTS_DECLARATION \
-    bool ___is_inside_test_with_subtests = true; \
     size_t ___total_ammount = 0; \
-    std::string ___prev_subtest_name; \
-    std::vector<std::pair<size_t, int>> ___subtests; \
+    std::vector<size_t> ___ammounts; \
     std::vector<std::string> ___names;
 
 #define SUBTEST(___name, ___amount, ___value) \
     ___total_ammount += ___amount; \
-    ___names.emplace_back(std::move(___name)); \
-    ___subtests.emplace_back(std::move(std::make_pair<size_t, int>(___amount, ___value)));
+    ___names.emplace_back(___name); \
+    ___ammounts.emplace_back(___amount);
 
 #define END_SUBTESTS_DECLARATION \
     if (___i == 0) { \
@@ -88,9 +86,8 @@
         ___r ++; \
     } \
     size_t ___prefix_sum = 0; \
-    int subtest_value = 0; \
     for (size_t ___j = 0; ___j < ___names.size(); ___j ++) { \
-        ___prefix_sum += ___subtests[___j].first; \
+        ___prefix_sum += ___ammounts[___j]; \
         if (___prefix_sum == ___i) { \
             std::cout << \
                 "Subtest " << (___j + 1) << " ("<< ___names[___j] << ") passed" << std::endl; \
@@ -98,12 +95,11 @@
         else if (___i < ___prefix_sum) { \
             ___subtest_num = ___j; \
             ___subtest_name = ___names[___j]; \
-            subtest_value = ___subtests[___j].second; \
             break; \
         } \
     } \
     if (___i == ___r - 1) \
-        break; \
+        break;
 
 
-#endif /// TESTLIB_LIB_H.
+#endif /// TESTLIB_MAIN_H.
