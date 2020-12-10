@@ -114,6 +114,28 @@
 #define RECEIVE_TEST_CONTEXT \
     const size_t& ___test_num, const std::string& ___test_name
 
+#define EXTERNAL_SUBTEST_HANDLERS_START \
+    { \
+        size_t ___handled_subtests_amount = 0; \
+
+#define EXTERNAL_SUBTEST_HANDLERS_END \
+    }
+
+#define START_EXTERNAL_SUBTEST_HANDLER(___subtests_amount) \
+    { \
+        const size_t ___current_handler_subtests_amount = ___subtests_amount; \
+        ___handled_subtests_amount += ___subtests_amount; \
+        if ( \
+            subtest_index >= ___handled_subtests_amount - ___subtests_amount && \
+            subtest_index < ___handled_subtests_amount \
+        ) { \
+            subtest_index -= (___handled_subtests_amount - ___subtests_amount);
+
+#define END_EXTERNAL_SUBTEST_HANDLER \
+            subtest_index += (___handled_subtests_amount - ___current_handler_subtests_amount); \
+        } \
+    }
+
 #define PROVIDE_SUBTEST_CONTEXT \
     subtest_index, ___subtest_name
 
