@@ -77,29 +77,47 @@
 
 #define SUBTEST(___name, ___amount) \
     ___total_ammount += ___amount; \
-    ___names.emplace_back(___name); \
-    ___ammounts.emplace_back(___amount);
+    ___ammounts.emplace_back(___amount); \
+    ___names.emplace_back(___name);
 
 #define END_SUBTESTS_DECLARATION \
     if (___i == 0) { \
         assert(___total_ammount == ___r); \
         ___r ++; \
     } \
-    size_t ___prefix_sum = 0; \
-    for (size_t ___j = 0; ___j < ___names.size(); ___j ++) { \
-        ___prefix_sum += ___ammounts[___j]; \
-        if (___prefix_sum == ___i) { \
-            std::cout << \
-                "Subtest " << (___j + 1) << " ("<< ___names[___j] << ") passed" << std::endl; \
-        } \
-        else if (___i < ___prefix_sum) { \
-            subtest_index = ___j; \
-            ___subtest_name = ___names[___j]; \
-            break; \
+    /**
+     * Need to wrap in order to isolate ___prefix_sum variable,
+     * because it's a non-context variable and shouldn't be seen.
+     */ \
+    { \
+        size_t ___prefix_sum = 0; \
+        for (size_t ___j = 0; ___j < ___names.size(); ___j ++) { \
+            ___prefix_sum += ___ammounts[___j]; \
+            if (___prefix_sum == ___i) { \
+                std::cout << \
+                    "Subtest " << (___j + 1) << " ("<< ___names[___j] << ") passed" << std::endl; \
+            } \
+            else if (___i < ___prefix_sum) { \
+                subtest_index = ___j; \
+                ___subtest_name = ___names[___j]; \
+                break; \
+            } \
         } \
     } \
     if (___i == ___r - 1) \
         break;
+
+#define PROVIDE_TEST_CONTEXT \
+    ___test_num, ___test_name
+
+#define RECEIVE_TEST_CONTEXT \
+    const size_t& ___test_num, const std::string& ___test_name
+
+#define PROVIDE_SUBTEST_CONTEXT \
+    subtest_index, ___subtest_name
+
+#define RECEIVE_SUBTEST_CONTEXT \
+    const ssize_t& subtest_index, const std::string& ___subtest_name
 
 
 #endif /// TESTLIB_MAIN_H.
