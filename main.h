@@ -2,19 +2,19 @@
 #define TESTLIB_MAIN_H
 
 #include <iostream>
+#include <iomanip>
+#include <cassert>
 #include <sstream>
 #include <string>
 #include <chrono>
-#include <cassert>
 
 
 
-#define START_TESTS \
-    size_t ___test_num = 0; \
+#define START_TESTS(___first_test_num) \
+    size_t ___test_num = ___first_test_num - 1; \
     std::string ___test_name; \
 
 #define END_TESTS \
-    std::cout << "All tests passed" << std::endl; \
     std::exit(0);
 
 #define START_TEST(___name) \
@@ -22,15 +22,31 @@
         ssize_t subtest_index = -1; \
         std::string ___subtest_name; \
         auto ___test_started = std::chrono::high_resolution_clock::now(); \
-        ++ ___test_num; \
         ___test_name = ___name; \
-        std::cout << "Test " << ___test_num << " (" << ___test_name << ") started" << std::endl;
+        std::cout << \
+            "Test " << \
+            (___test_num + 1) << \
+            " (" << \
+            ___test_name << \
+            ") started" << \
+            std::endl;
 
 #define END_TEST \
-        auto ___test_runtime = std::chrono::duration_cast<std::chrono::milliseconds>( \
-            std::chrono::high_resolution_clock::now() - ___test_started).count(); \
-        std::cout << "Test " << ___test_num << " (" << ___test_name << ") passed" << \
-        " in " << ___test_runtime << "ms" << std::endl << std::endl; \
+        std::cout << "Passed in "; \
+        const auto ___test_runtime = \
+            std::chrono::duration_cast<std::chrono::milliseconds>( \
+                std::chrono::high_resolution_clock::now() - ___test_started \
+            ).count(); \
+        if (___test_runtime < 100) \
+            std::cout << std::to_string(___test_runtime) << "ms"; \
+        else \
+            std::cout << \
+                std::setprecision(1) << \
+                std::fixed << \
+                (___test_runtime / 1000.) << \
+                "s"; \
+        std::cout << std::endl << std::endl; \
+        ++ ___test_num; \
     }
 
 #define TEST_FAILED_BASE(___msg) \
@@ -45,7 +61,7 @@
                 std::endl; \
         else \
             std::cout << "Test failed:" << std::endl; \
-        std::cout << std::endl << ___msg; \
+        std::cout << std::endl << ___msg << std::endl; \
         exit(1); \
     }
 
@@ -96,7 +112,12 @@
             ___prefix_sum += ___ammounts[___j]; \
             if (___prefix_sum == ___i) { \
                 std::cout << \
-                    "Subtest " << (___j + 1) << " ("<< ___names[___j] << ") passed" << std::endl; \
+                    "Subtest " << \
+                    (___j + 1) << \
+                    " (" << \
+                    ___names[___j] << \
+                    ") passed" << \
+                    std::endl; \
             } \
             else if (___i < ___prefix_sum) { \
                 subtest_index = ___j; \
