@@ -10,7 +10,15 @@
 
 
 
-#define START_TESTS(___first_test_num) \
+#define START_TESTS \
+    size_t ___test_num = 0; \
+    std::string ___test_name; \
+
+/**
+ * Should be used only by automatic
+ * external testlib-translator module.
+ */
+#define START_TESTS_FROM(___first_test_num) \
     size_t ___test_num = ___first_test_num - 1; \
     std::string ___test_name; \
 
