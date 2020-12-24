@@ -16,7 +16,7 @@
 
 /**
  * Should be used only by automatic
- * external testlib-translator module.
+ * external testlib-converter module.
  */
 #define START_TESTS_FROM(___first_test_num) \
     size_t ___test_num = ___first_test_num - 1; \
