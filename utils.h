@@ -2,6 +2,7 @@
 #define TESTLIB_UTILS_H
 
 #include <string>
+#include <cmath>
 
 
 
@@ -20,6 +21,10 @@ namespace __utils {
 
     std::string wrap (const std::string& str) {
         return wrap_front(wrap_back(str));
+    }
+
+    double cmp_double (const double first, const double second, const double eps = 1e-6) {
+        return std::fabs(first - second) < eps;
     }
 } /// namespace __utils.
 
