@@ -23,7 +23,7 @@ namespace __utils {
         return wrap_front(wrap_back(str));
     }
 
-    double cmp_double (const double first, const double second, const double eps = 1e-6) {
+    bool cmp_double (const double first, const double second, const double eps = 1e-6) {
         return std::fabs(first - second) < eps;
     }
 } /// namespace __utils.
