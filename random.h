@@ -32,4 +32,5 @@ namespace __random {
     bool toss_coin () { return get_random_int_number<int>(0, 1) == 1; }
 } /// namespace __random.
 
+
 #endif /// TESTLIB_RANDOM_H.
