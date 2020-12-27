@@ -10,7 +10,7 @@ namespace __random {
     template<typename T>
     T get_random_int_number (
         const T &min = std::numeric_limits<T>::min(),
-        const T &max  = std::numeric_limits<T>::min()
+        const T &max  = std::numeric_limits<T>::max()
     ) {
         std::random_device rd;
         std::mt19937 gen(rd());
