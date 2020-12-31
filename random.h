@@ -30,6 +30,11 @@ namespace __random {
     }
 
     bool toss_coin () { return get_random_int_number<int>(0, 1) == 1; }
+
+    template <typename T>
+    T choose_random_element (const std::initializer_list<T>& il) {
+        return std::vector(il)[get_random_int_number<size_t>(0, il.size() - 1)];
+    }
 } /// namespace __random.
 
 
