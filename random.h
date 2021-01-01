@@ -35,6 +35,11 @@ namespace __random {
     T choose_random_element (const std::initializer_list<T>& il) {
         return std::vector(il)[get_random_int_number<size_t>(0, il.size() - 1)];
     }
+
+    template <typename container>
+    typename container::value_type choose_random_element (const container& c) {
+        return c[get_random_int_number<size_t>(0, c.size() - 1)];
+    }
 } /// namespace __random.
 
 
