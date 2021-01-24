@@ -7,13 +7,18 @@
 
 
 namespace __random {
+    auto get_random_seed() {
+        static std::random_device rd;
+        unsigned long time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+        return rd() + time;
+    }
+
     template<typename T>
     T get_random_int_number (
         const T &min = std::numeric_limits<T>::min(),
         const T &max  = std::numeric_limits<T>::max()
     ) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
+        static std::mt19937 gen(get_random_seed());
         std::uniform_int_distribution<T> dis(min, max);
         return dis(gen);
     }
@@ -23,8 +28,7 @@ namespace __random {
         const T &min = std::numeric_limits<T>::min(),
         const T &max  = std::numeric_limits<T>::min()
     ) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
+        static std::mt19937 gen(get_random_seed());
         std::uniform_real_distribution<T> dis(min, max);
         return dis(gen);
     }
