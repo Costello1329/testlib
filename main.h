@@ -137,11 +137,14 @@
     if (___i == ___r - 1) \
         break;
 
-#define PROVIDE_TEST_CONTEXT \
-    ___test_num, ___test_name
+#define PROVIDE_CONTEXT \
+    ___test_num, ___test_name, subtest_index, ___subtest_name
 
-#define RECEIVE_TEST_CONTEXT \
-    const size_t& ___test_num, const std::string& ___test_name
+#define RECEIVE_CONTEXT \
+    const size_t& ___test_num, \
+    const std::string& ___test_name, \
+    const ssize_t& subtest_index, \
+    const std::string& ___subtest_name
 
 #define EXTERNAL_SUBTEST_HANDLERS_START \
     { \
@@ -164,12 +167,6 @@
             subtest_index += (___handled_subtests_amount - ___current_handler_subtests_amount); \
         } \
     }
-
-#define PROVIDE_SUBTEST_CONTEXT \
-    subtest_index, ___subtest_name
-
-#define RECEIVE_SUBTEST_CONTEXT \
-    const ssize_t& subtest_index, const std::string& ___subtest_name
 
 
 #endif /// TESTLIB_MAIN_H.

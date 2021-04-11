@@ -7,7 +7,7 @@
 
 
 namespace __random {
-    auto get_random_seed() {
+    auto get_random_seed () {
         static std::random_device rd;
         unsigned long time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
         return rd() + time;
