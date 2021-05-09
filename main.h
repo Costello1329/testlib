@@ -5,14 +5,16 @@
 #include <iomanip>
 #include <cassert>
 #include <sstream>
-#include <string>
 #include <chrono>
+
+#include "./malloc_allocator.h"
+
 
 
 
 #define START_TESTS \
     size_t ___test_num = 0; \
-    std::string ___test_name; \
+    malloc_string ___test_name; \
 
 /**
  * Should be used only by automatic
@@ -20,7 +22,7 @@
  */
 #define START_TESTS_FROM(___first_test_num) \
     size_t ___test_num = ___first_test_num - 1; \
-    std::string ___test_name; \
+    malloc_string ___test_name; \
 
 #define END_TESTS \
     std::exit(0);
@@ -28,7 +30,7 @@
 #define START_TEST(___name) \
     { \
         ssize_t subtest_index = -1; \
-        std::string ___subtest_name; \
+        malloc_string ___subtest_name; \
         auto ___test_started = std::chrono::high_resolution_clock::now(); \
         ___test_name = ___name; \
         std::cout << \
@@ -75,7 +77,7 @@
 
 #define TEST_FAILED(___input, ___expected, ___got) \
     { \
-        std::stringstream ___str; \
+        malloc_stringstream ___str; \
         ___str << \
             "Input: " << ___input << std::endl << \
             "Expected: " << ___expected << std::endl << \
@@ -97,8 +99,8 @@
 
 #define START_SUBTESTS_DECLARATION \
     size_t ___total_ammount = 0; \
-    std::vector<size_t> ___ammounts; \
-    std::vector<std::string> ___names;
+    malloc_vector<size_t> ___ammounts; \
+    malloc_vector<malloc_string> ___names;
 
 #define SUBTEST(___name, ___amount) \
     ___total_ammount += ___amount; \
@@ -142,9 +144,9 @@
 
 #define RECEIVE_CONTEXT \
     const size_t& ___test_num, \
-    const std::string& ___test_name, \
+    const malloc_string& ___test_name, \
     const ssize_t& subtest_index, \
-    const std::string& ___subtest_name
+    const malloc_string& ___subtest_name
 
 #define EXTERNAL_SUBTEST_HANDLERS_START \
     { \
