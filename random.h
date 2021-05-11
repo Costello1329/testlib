@@ -2,7 +2,11 @@
 #define TESTLIB_RANDOM_H
 
 #include <numeric>
+#include <limits>
 #include <random>
+#include <chrono>
+
+#include "./malloc_allocator.h"
 
 
 
@@ -37,7 +41,7 @@ namespace __random {
 
     template <typename T>
     T choose_random_element (const std::initializer_list<T>& il) {
-        return std::vector(il)[get_random_int_number<size_t>(0, il.size() - 1)];
+        return malloc_vector(il)[get_random_int_number<size_t>(0, il.size() - 1)];
     }
 
     template <typename container>
