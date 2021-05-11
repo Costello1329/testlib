@@ -32,13 +32,13 @@ namespace __constexpr_random {
         return static_cast<double>(uniform_distribution(previous)) / lce_m;
     }
 
-    template <typename T, size_t sz>
-    constexpr static auto uniform_distribution (T min, T max) {
-        std::array<T, sz> dst{};
+    template <typename vt, size_t sz>
+    constexpr static auto uniform_distribution (vt min, vt max) {
+        std::array<vt, sz> dst{};
         auto previous = get_seed_constexpr();
 
         for (auto &el : dst)
-            el = static_cast<T>(uniform_distribution_n(previous) * (max - min) + min);
+            el = static_cast<vt>(uniform_distribution_n(previous) * (max - min) + min);
 
         return dst;
     }
