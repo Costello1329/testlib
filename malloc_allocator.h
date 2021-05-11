@@ -15,6 +15,16 @@ struct malloc_allocator {
     void deallocate (vt* ptr, const size_t) { return free(ptr); }
 };
 
+template <typename vt, typename vt2>
+bool operator == (const malloc_allocator<vt>&, const malloc_allocator<vt2>&) noexcept {
+    return true;
+}
+
+template <typename vt, typename vt2>
+bool operator != (const malloc_allocator<vt>& first, const malloc_allocator<vt2>& second) noexcept {
+    return !operator==(first, second);
+}
+
 typedef std::basic_string<char, std::char_traits<char>, malloc_allocator<char>> malloc_string;
 
 typedef std::basic_stringstream<
